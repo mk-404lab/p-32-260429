@@ -12,8 +12,9 @@ class App {
             print("명령) ")
 
             val input = readln()
+            val rq = Rq(input)
 
-            when (input) {
+            when (rq.action) {
 
                 "종료" -> {
                     println("프로그램을 종료합니다.")
@@ -28,7 +29,7 @@ class App {
                     val id = ++lastId
 
                     WiseSaying(id, content, author)
-                        .also {wiseSayings.add(it)}
+                        .also { wiseSayings.add(it) }
 
                     println("${id}번 명령이 등록되었습니다.")
                 }
@@ -37,6 +38,16 @@ class App {
                     println("번호 / 작가 / 명언")
                     println("-".repeat(30))
                     wiseSayings.reversed().forEach { println("${it.id} / ${it.author} / ${it.content}") }
+                }
+
+                "삭제" -> { // 삭제?id=1
+                    val id = rq.getParamAsInt("id", 0)
+
+                    wiseSayings.removeIf {
+                        it.id == id
+                    }
+
+                    println("${id}번의 명언이 삭제되었습니다.")
                 }
             }
         }
